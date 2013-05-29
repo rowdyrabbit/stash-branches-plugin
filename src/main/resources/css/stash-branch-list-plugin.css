@@ -3,83 +3,83 @@
 }
 
 .branch-list-table .branch-name:before, .branch-list-table .branch-pattern:before {
-display: inline-block;
-width: 20px;
-height: 20px;
-content: "";
-background-image: url('../com.atlassian.stash.stash-web-plugin:icons/icon-branch.png');
-background-position: center center;
-background-repeat: no-repeat;
-vertical-align: middle;
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+	content: "";
+	background-image: url('../com.atlassian.stash.stash-web-plugin:icons/icon-branch.png');
+	background-position: center center;
+	background-repeat: no-repeat;
+	vertical-align: middle;
 }
 
 .comparison-state {
-display: block;
-text-align: center;
+	display: block;
+	text-align: center;
 }
 
 .comparison .separator {
-display: block;
-position: absolute;
-top: 0;
-left: 50%;
-margin-left: -2px;
-width: 2px;
-height: 100%;
-background: #454545;
+	display: block;
+	position: absolute;
+	top: 0;
+	left: 50%;
+	margin-left: -2px;
+	width: 2px;
+	height: 100%;
+	background: #454545;
 }
 
 .comparison .ahead {
-display: block;
-position: absolute;
-width: 50%;
-height: 100%;
-left: 50%;
+	display: block;
+	position: absolute;
+	width: 50%;
+	height: 100%;
+	left: 50%;
 }
 .comparison .behind {
-display: block;
-position: absolute;
-width: 50%;
-height: 100%;
-right: 50%;
+	display: block;
+	position: absolute;
+	width: 50%;
+	height: 100%;
+	right: 50%;
 }
 
 .comparison .bar {
-position: absolute;
-top: 13px;
-right: 0;
-display: block;
-height: 8px;
-background: #d0d0d0;
+	position: absolute;
+	top: 13px;
+	right: 0;
+	display: block;
+	height: 8px;
+	background: #d0d0d0;
 }
 
 .comparison {
-position: relative;
-height: 35px;
+	position: relative;
+	height: 35px;
 }
 
 
 .comparison .ahead .bar {
-background: #7a7a7a;
-left: 0;
+	background: #7a7a7a;
+	left: 0;
 }
 
 .comparison em {
-font-style: normal;
-font-size: 10px;
-line-height: 10px;
-color: #999;
-white-space: nowrap;
+	font-style: normal;
+	font-size: 10px;
+	line-height: 10px;
+	color: #999;
+	white-space: nowrap;
 }
 
 .comparison .ahead em {
-position: absolute;
-top: 0;
-left: 5px;
+	position: absolute;
+	top: 0;
+	left: 5px;
 }
 
 .comparison .behind em {
-position: absolute;
-bottom: 0;
-right: 5px;
+	position: absolute;
+	bottom: 0;
+	right: 5px;
 }

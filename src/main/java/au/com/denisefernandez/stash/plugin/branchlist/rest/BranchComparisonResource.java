@@ -9,8 +9,8 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import au.com.denisefernandez.stash.plugin.branchlist.service.BranchComparison;
 import au.com.denisefernandez.stash.plugin.branchlist.service.BranchService;
-import au.com.denisefernandez.stash.plugin.branchlist.service.BranchStatus;
 
 import com.atlassian.plugins.rest.common.security.AnonymousAllowed;
 import com.atlassian.stash.repository.Branch;
@@ -20,9 +20,6 @@ import com.atlassian.stash.repository.RepositoryService;
 import com.atlassian.stash.util.Page;
 import com.sun.jersey.spi.resource.Singleton;
 
-/**
- * A resource of message.
- */
 @AnonymousAllowed
 @Consumes({MediaType.APPLICATION_JSON})
 @Produces({MediaType.APPLICATION_JSON})
@@ -42,12 +39,10 @@ public class BranchComparisonResource {
 
     @GET
 	public Response getBranchComparison(@PathParam("repositorySlug") String repositorySlug, @PathParam("projectKey") String projectKey, @QueryParam("branch") String branchId) {
-    	System.out.println("IN GET METHOD!! Branch ID is: "+branchId);
     	Repository repo = repositoryService.getBySlug(projectKey, repositorySlug);
     	Branch comparisonBranch = (Branch) repositoryMetadataService.resolveRef(repo, branchId);
-    	Page<BranchStatus> branchStatuses = branchService.getDiffsBetweenBranchesAndSelectedBranch(repo, comparisonBranch);
+    	Page<BranchComparison> branchList = branchService.getDiffsBetweenAllBranchesAndComparisonBranch(repo, comparisonBranch);
     	
-    	Restp
-    	return Response.ok(new BranchComparisonResourceModel(branchStatuses)).build();
+    	return Response.ok(new BranchComparisonResourceModel(branchList)).build();
     }
 }

@@ -3,18 +3,20 @@ package au.com.denisefernandez.stash.plugin.branchlist.service;
 import com.atlassian.stash.repository.Branch;
 
 
-public class BranchStatus {
+public class BranchComparison {
 	
 	private static final float MAX_NUM_COMMITS_AHEAD_OR_BEHIND = 50;
 	
 	private Branch branch;
 	private int aheadCount;
 	private int behindCount;
+	private String branchUrl;
 	
-	public BranchStatus(Branch branch, int aheadCount, int behindCount) {
+	public BranchComparison(Branch branch, int aheadCount, int behindCount, String branchUrl) {
 		this.setBranch(branch);
 		this.setAheadCount(aheadCount);
 		this.setBehindCount(behindCount);
+		this.branchUrl = branchUrl;
 	}
 
 	public int getBehindCount() {
@@ -47,6 +49,10 @@ public class BranchStatus {
 
 	public void setBranch(Branch branch) {
 		this.branch = branch;
+	}
+	
+	public String getBranchUrl() {
+		return branchUrl;
 	}
 
 

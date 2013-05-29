@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import au.com.denisefernandez.stash.plugin.branchlist.service.BranchStatus;
+import au.com.denisefernandez.stash.plugin.branchlist.service.BranchComparison;
 
 import com.atlassian.stash.util.Page;
 @XmlRootElement(name = "message")
@@ -17,27 +17,30 @@ import com.atlassian.stash.util.Page;
 public class BranchComparisonResourceModel {
 
     @XmlElement(name = "values")
-    private List<RestBranchStatus> branchList;
+    private List<RestBranchComparison> branchList;
     
 
-    public BranchComparisonResourceModel(Page<BranchStatus> branchStatusList) {
+    public BranchComparisonResourceModel(Page<BranchComparison> branchStatusList) {
     	this.branchList = transformList(branchStatusList);
     }
 
-
-	public List<RestBranchStatus> getBranchList() {
+	public List<RestBranchComparison> getBranchList() {
 		return branchList;
 	}
 	
-	private List<RestBranchStatus> transformList(Page<BranchStatus> branchStatusList) {
-		List<RestBranchStatus> list = new ArrayList<RestBranchStatus>();
-		Iterator<BranchStatus> it = branchStatusList.getValues().iterator();
+	private List<RestBranchComparison> transformList(Page<BranchComparison> branchStatusList) {
+		List<RestBranchComparison> list = new ArrayList<RestBranchComparison>();
 		
-		while(it.hasNext()) {
-			BranchStatus b = it.next();
-			RestBranchStatus r = new RestBranchStatus(b);
-			list.add(r);
+		Iterable<BranchComparison> it = branchStatusList.getValues();
+		if (it != null) {
+			Iterator<BranchComparison> iterator = it.iterator();
+			while(iterator.hasNext()) {
+				BranchComparison branch = iterator.next();
+				RestBranchComparison restBranch = new RestBranchComparison(branch);
+				list.add(restBranch);
+			}
 		}
+		
 		return list;
 	}
 }

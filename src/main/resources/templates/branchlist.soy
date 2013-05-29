@@ -47,11 +47,11 @@
  * @param behindCount
  * @param aheadPercentage
  * @param behindPercentage
+ * @param branchUrl
  */
 {template .branchRow}
-
 	<tr>
-		<td><span class="branch-name" title="{$branch.id}">{$branch.displayId}</span></td>
+		<td><span class="branch-name" title="{$branch.id}"><a href="{$branchUrl}">{$branch.displayId}</a></span></td>
 		<td>
 			<div class="comparison">
 				<span class="behind">
@@ -81,8 +81,7 @@
     </div>
     <div class="aui-item branch-list-item">
         <div class="branch-list-splash-text">
-            <h2>Branches</h2>
-            <p>No other branches have been created</p>
+            <p>No other branches exist to compare with.</p>
         </div>
     </div>
 </div>

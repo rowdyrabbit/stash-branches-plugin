@@ -8,6 +8,7 @@
     <param name="plugin-icon">images/pluginIcon.png</param>
     <param name="plugin-logo">images/pluginLogo.png</param>
   </plugin-info>
+  
   <!-- add our i18n resource -->
   <resource type="i18n" name="i18n" location="stash-branch-list-plugin"/>
   
@@ -16,9 +17,7 @@
         <exclude>/**/server-side*.*</exclude>
     </directory>
     <resource type="download" name="stash-branch-list-plugin.css" location="css/stash-branch-list-plugin.css"/>
-    <resource type="download" name="branch-table.js" location="js/branch-table.js"/>
     <resource type="download" name="stash-branch-list-plugin.js" location="js/stash-branch-list-plugin.js"/>
-    <resource type="download" name="images/" location="/images"/>
     <dependency>com.atlassian.auiplugin:ajs</dependency>
     <dependency>com.atlassian.stash.stash-web-plugin:infinite-table</dependency>
     <dependency>com.atlassian.stash.stash-web-api:branch-selector-field</dependency>
@@ -43,20 +42,28 @@
   <component-import key="gitAgent" interface="com.atlassian.stash.scm.git.GitAgent"/>
   <component-import key="webResourceManager" interface="com.atlassian.plugin.webresource.WebResourceManager"/>
   <component-import key="repositoryMetadataService" interface="com.atlassian.stash.repository.RepositoryMetadataService"/>
+  <component-import key="templateRenderer" interface="com.atlassian.templaterenderer.TemplateRenderer"/>
+  <component-import key="loggingService" interface="com.atlassian.stash.config.log.LoggingService"/>
+  
   <!-- publish our components -->
-  <component key="branchService" class="au.com.denisefernandez.stash.plugin.branchlist.service.BranchService"/>
+  <component key="branchService" class="au.com.denisefernandez.stash.plugin.branchlist.service.BranchServiceImpl"/>
+  
+  <!-- servlets -->
   <servlet name="Branch List Servlet" i18n-name-key="branch-list-servlet.name" key="branch-list-servlet" class="au.com.denisefernandez.stash.plugin.branchlist.servlet.BranchListServlet">
-    <description key="branch-list-servlet.description">The Branch List Servlet Plugin</description>
     <url-pattern>/branches/*</url-pattern>
   </servlet>
-  <web-item name="Branch List" i18n-name-key="branch-list.name" key="branch-list" section="stash.repository.nav" weight="1000">
-    <description key="branch-list.description">The Branch List Plugin</description>
-    <label key="branch-list.label">Branches</label>
+  
+  <!-- web items -->
+  <web-item name="Branches" i18n-name-key="branch-list.name" key="branch-list" section="stash.repository.nav" weight="1000">
     <link linkId="branch-list-link">/plugins/servlet/branches/${repository.project.key}/${repository.slug}</link>
+    <label key="branch-list.label">Branches</label>
+    <condition class="com.atlassian.stash.web.conditions.RepositoryNotEmptyCondition"/>
   </web-item>
+  
+  <!-- rest components -->
   <rest name="Branch Comparison Resource" i18n-name-key="branch-comparison-resource.name" key="branch-comparison-resource" path="/branchcomparison" version="1.0">
   	<dispatcher>REQUEST</dispatcher>
   	<dispatcher>FORWARD</dispatcher>
-    <description key="branch-comparison-resource.description">The Branch Comparison Resource Plugin</description>
   </rest>
+  
 </atlassian-plugin>
