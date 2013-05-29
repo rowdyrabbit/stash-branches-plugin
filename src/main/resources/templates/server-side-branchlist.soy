@@ -1,0 +1,42 @@
+{namespace stash.plugin.branchlist}
+
+/**
+ * @param repository Repository object
+ * @param branchListPage
+ * @param defaultBranch
+ */
+{template .viewbranches}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="decorator" content="stash.repository.general">
+    <meta name="projectKey" content="{$repository.project.key}">
+    <meta name="repositorySlug" content="{$repository.slug}">
+    <meta name="activeTab" content="branch-list">
+    <title>Branches - {$repository.slug}</title>
+</head>
+<body>
+	 {call widget.aui.pageHeader}
+        {param contents}
+            <h2>Branches</h2>
+        {/param}
+	 {/call}
+	 {call widget.aui.form.form}
+        {param action: '' /}
+        {param contents}
+	        {call Stash.template.branchSelector.input}
+	            {param id: 'branch' /}
+	            {param initialValue: $defaultBranch.id /}
+	        {/call}
+        	{call .viewbranchesPageContents}
+                {param branchListPage: $branchListPage /}
+            {/call}
+		    <input type="hidden" name="repoId" value="{$repository.id}"/>
+        {/param}
+    {/call}
+    <script>
+    	require('page/branch/branch-list').onReady({to_json($branchListPage)|noAutoescape}, {avatarSize('small')}, {to_json($defaultBranch.id)|noAutoescape});
+    </script>
+</body>
+</html>
+{/template}

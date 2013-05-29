@@ -1,0 +1,89 @@
+{namespace stash.plugin.branchlist}
+
+/**
+ * @param branchListPage
+ **/
+{template .viewbranchesPageContents}
+    {if $branchListPage.size > 0}
+        {call .branchListTable data="$branchListPage" /}
+    {else}
+        {call .branchListBanner /}
+    {/if}
+{/template}
+
+/**
+ * @param values
+ */
+{template .branchListTable}
+    {call widget.aui.table}
+        {param id: 'branch-table' /}
+        {param extraClasses: 'branch-list-table' /}
+        {param headRowsHtml}
+            <th>Name</th>
+            <th>State</th>
+            <th><!-- actions --></th>
+        {/param}
+        {param bodyRowsHtml}
+            {call .branchRows}
+                {param values: $values /}
+            {/call}
+        {/param}
+    {/call}
+{/template}
+
+
+/**
+ * @param values
+ */
+{template .branchRows}
+	{foreach $branch in $values}
+	    {call .branchRow data="$branch"}{/call}
+	{/foreach}
+{/template}
+
+/**
+ * @param branch
+ * @param aheadCount
+ * @param behindCount
+ * @param aheadPercentage
+ * @param behindPercentage
+ */
+{template .branchRow}
+
+	<tr>
+		<td><span class="branch-name" title="{$branch.id}">{$branch.displayId}</span></td>
+		<td>
+			<div class="comparison">
+				<span class="behind">
+		            <span class="bar" style="width: {$behindPercentage}%"></span>
+	            	<em>{$behindCount} behind</em>
+	          	</span>
+	          	<span class="ahead">
+	            	<span class="bar" style="width: {$aheadPercentage}%"></span>
+	            	<em>{$aheadCount} ahead</em>
+	          	</span>
+	          	<span class="separator"></span>
+			</div>
+		</td>
+		<td></td>
+	</tr>
+{/template}
+
+
+/**
+ *
+ **/
+{template .branchListBanner}
+<div class='branch-list-banner'>
+    <div class="aui-item branch-list-item">
+        <div class="branch-list-splash-image">
+        </div>
+    </div>
+    <div class="aui-item branch-list-item">
+        <div class="branch-list-splash-text">
+            <h2>Branches</h2>
+            <p>No other branches have been created</p>
+        </div>
+    </div>
+</div>
+{/template}

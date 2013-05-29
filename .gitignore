@@ -1,0 +1,15 @@
+# Target directory for atlassian plugin stuff
+target/
+bin/
+
+# Compiled Java source
+*.class
+
+
+# Log files
+*.log
+
+# Eclipse workspace stuff
+.settings/
+.project
+.classpath

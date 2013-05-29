@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<atlassian-plugin key="${project.groupId}.${project.artifactId}" name="${project.name}" plugins-version="2">
+  <plugin-info>
+    <description>${project.description}</description>
+    <version>${project.version}</version>
+    <vendor name="${project.organization.name}" url="${project.organization.url}"/>
+    <param name="plugin-icon">images/pluginIcon.png</param>
+    <param name="plugin-logo">images/pluginLogo.png</param>
+  </plugin-info>
+  <!-- add our i18n resource -->
+  <resource type="i18n" name="i18n" location="stash-branch-list-plugin"/>
+  
+  <stash-resource key="branchlist-soy">
+    <directory location="/templates/">
+        <exclude>/**/server-side*.*</exclude>
+    </directory>
+    <resource type="download" name="stash-branch-list-plugin.css" location="css/stash-branch-list-plugin.css"/>
+    <resource type="download" name="stash-branch-list-plugin.js" location="js/stash-branch-list-plugin.js"/>
+    <resource type="download" name="images/" location="/images"/>
+    <dependency>com.atlassian.auiplugin:ajs</dependency>
+    <dependency>com.atlassian.stash.stash-web-plugin:infinite-table</dependency>
+    <dependency>com.atlassian.stash.stash-web-api:branch-selector-field</dependency>
+    <dependency>com.atlassian.stash.stash-web-plugin:global</dependency>
+    <dependency>com.atlassian.stash.stash-web-plugin:repository-branch-selector</dependency>
+    <dependency>com.atlassian.stash.stash-web-plugin:user-multiselect</dependency>
+    <dependency>com.atlassian.auiplugin:aui-experimental-tooltips</dependency>
+    <context>stash-branch-list-plugin</context>
+  </stash-resource>
+  
+  <stash-resource key="branchlist-soy-server">
+  	<directory location="/templates/">
+       <include>/**/*.soy</include>
+   	</directory>
+    <dependency>com.atlassian.stash.stash-web-plugin:server-soy-templates</dependency>
+  </stash-resource>
+  
+  <!-- import from the product container -->
+  <component-import key="applicationProperties" interface="com.atlassian.sal.api.ApplicationProperties"/>
+  <component-import key="gitCommandBuilderFactory" interface="com.atlassian.stash.scm.git.GitCommandBuilderFactory"/>
+  <component-import key="soyTemplateRenderer" interface="com.atlassian.soy.renderer.SoyTemplateRenderer"/>
+  <component-import key="gitAgent" interface="com.atlassian.stash.scm.git.GitAgent"/>
+  <component-import key="webResourceManager" interface="com.atlassian.plugin.webresource.WebResourceManager"/>
+  <component-import key="repositoryMetadataService" interface="com.atlassian.stash.repository.RepositoryMetadataService"/>
+  <!-- publish our components -->
+  <component key="branchService" class="au.com.denisefernandez.stash.plugin.branchlist.service.BranchService"/>
+  <servlet name="Branch List Servlet" i18n-name-key="branch-list-servlet.name" key="branch-list-servlet" class="au.com.denisefernandez.stash.plugin.branchlist.servlet.BranchListServlet">
+    <description key="branch-list-servlet.description">The Branch List Servlet Plugin</description>
+    <url-pattern>/branches/*</url-pattern>
+  </servlet>
+  <web-item name="Branch List" i18n-name-key="branch-list.name" key="branch-list" section="stash.repository.nav" weight="1000">
+    <description key="branch-list.description">The Branch List Plugin</description>
+    <label key="branch-list.label">Branches</label>
+    <link linkId="branch-list-link">/plugins/servlet/branches/${repository.project.key}/${repository.slug}</link>
+  </web-item>
+  <rest name="Branch Comparison Resource" i18n-name-key="branch-comparison-resource.name" key="branch-comparison-resource" path="/branchcomparison" version="1.0">
+  	<dispatcher>REQUEST</dispatcher>
+  	<dispatcher>FORWARD</dispatcher>
+    <description key="branch-comparison-resource.description">The Branch Comparison Resource Plugin</description>
+  </rest>
+</atlassian-plugin>
