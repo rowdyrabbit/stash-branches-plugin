@@ -16,6 +16,7 @@
         <exclude>/**/server-side*.*</exclude>
     </directory>
     <resource type="download" name="stash-branch-list-plugin.css" location="css/stash-branch-list-plugin.css"/>
+    <resource type="download" name="branch-table.js" location="js/branch-table.js"/>
     <resource type="download" name="stash-branch-list-plugin.js" location="js/stash-branch-list-plugin.js"/>
     <resource type="download" name="images/" location="/images"/>
     <dependency>com.atlassian.auiplugin:ajs</dependency>

@@ -33,35 +33,19 @@ public class BranchService {
 		this.scmService = scmService;
 	}
 
-	public Branch getDefaultBranch(Repository repo) {
-		ScmCommandFactory factory = scmService.getCommandFactory(repo);
-    	Page<Branch> page = factory.branches(new BranchesCommandParameters.Builder().order(RefOrder.ALPHABETICAL).build(), new PageRequestImpl(0, 100)).call();
-    	Iterable<Branch> branches = page.getValues();
-    	Iterator<Branch> allBranches = branches.iterator();
-    	while(allBranches.hasNext()) {
-    		Branch b = allBranches.next();
-    		if (b.getIsDefault()) {
-    			return b;
-    		}
-    	}
-    	return null;
-	}
-	
-	public Page<? extends BranchStatus> getDiffsBetweenBranchesAndMaster(Repository repo) {
-		Branch compareBranch = getDefaultBranch(repo);
-		return getDifferences(repo, compareBranch);
-	}
-	
 	public Page<BranchStatus> getDiffsBetweenBranchesAndSelectedBranch(Repository repo, Branch compareBranch) {
-		return getDifferences(repo, compareBranch);
+		return getDifferences(repo, compareBranch,  new PageRequestImpl(0, 100));
+	}
+	
+	public Page<BranchStatus> getDiffsBetweenBranchesAndSelectedBranch(Repository repo, Branch compareBranch, PageRequest pageRequest) {
+		return getDifferences(repo, compareBranch, pageRequest);
 	}
 
-	private Page<BranchStatus> getDifferences(Repository repo, Branch compareBranch) {
+	private Page<BranchStatus> getDifferences(Repository repo, Branch compareBranch, PageRequest pageRequest) {
 		ScmCommandFactory factory = scmService.getCommandFactory(repo);
-		Page<Branch> page = factory.branches(new BranchesCommandParameters.Builder().order(RefOrder.ALPHABETICAL).build(), new PageRequestImpl(0, 100)).call();
+		Page<Branch> page = factory.branches(new BranchesCommandParameters.Builder().order(RefOrder.ALPHABETICAL).build(),pageRequest).call();
 		Iterator<Branch> allBranches = page.getValues().iterator();
 		List<BranchStatus> branchStatusList = getBranchComparisons(allBranches, compareBranch, repo);
-		final PageRequest pageRequest = new PageRequestImpl(0, 100);
 		return new PageImpl<BranchStatus>(pageRequest, ImmutableList.copyOf(branchStatusList), true);
 	}
 	

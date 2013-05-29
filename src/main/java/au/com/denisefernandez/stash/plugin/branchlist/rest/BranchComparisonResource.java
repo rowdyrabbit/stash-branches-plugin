@@ -47,6 +47,7 @@ public class BranchComparisonResource {
     	Branch comparisonBranch = (Branch) repositoryMetadataService.resolveRef(repo, branchId);
     	Page<BranchStatus> branchStatuses = branchService.getDiffsBetweenBranchesAndSelectedBranch(repo, comparisonBranch);
     	
+    	Restp
     	return Response.ok(new BranchComparisonResourceModel(branchStatuses)).build();
     }
 }

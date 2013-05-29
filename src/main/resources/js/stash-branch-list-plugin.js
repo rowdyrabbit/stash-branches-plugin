@@ -6,6 +6,7 @@ define('page/branch/branch-list', [
     'model/page-state',
     'util/ajax',
     'feature/repository/branch-selector',
+    'plugin/branchlist/branch-table',
     'backbone-brace',
     'widget/paged-table',
     'util/events'
@@ -17,6 +18,7 @@ define('page/branch/branch-list', [
     pageState,
     ajax,
     BranchSelector,
+    BranchTable,
     Brace,
     PagedTable,
     events
@@ -75,6 +77,8 @@ define('page/branch/branch-list', [
 		var branchList = new BranchStatusCollection(tableJSON.values, {avatarSize: avatarSize});
 		var view = new BranchListTableView($('.branch-list-table'), branchList);
 		
+		
+		
 		events.on('stash.feature.repository.revisionReferenceSelector.revisionRefChanged', function(revisionRef) {
 		    var branchSelectorField = this;
 		    var branchId = revisionRef.getId();
@@ -82,7 +86,7 @@ define('page/branch/branch-list', [
 		    console.log("selected branch id is: "+branchId);
 		    if (branchId != currentBranchId) {
 		    	console.log("branch has changed");
-		    	currentBranchId = branchId;
+		    	this.currentBranchId = branchId;
 		    	$.ajax({ 
 		    		type: "GET",
 		    		dataType: "json",
@@ -90,6 +94,7 @@ define('page/branch/branch-list', [
 		    		success: function(data){   
 		    			console.log(data);
 		    			view.refreshTable(data);
+		    			new BranchTable('.branch-list-table', resourceUrl(branchId)).init();
 		    		}
 		    	});
 		    } else {
@@ -101,6 +106,7 @@ define('page/branch/branch-list', [
     exports.onReady = function(tableJSON, avatarSize, initialBranchId) {
     	console.log("in here yo: "+initialBranchId);
         onReady(tableJSON, avatarSize, initialBranchId);
+        
     };
 
 });

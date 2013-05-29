@@ -16,7 +16,9 @@ import au.com.denisefernandez.stash.plugin.branchlist.service.BranchService;
 import com.atlassian.plugin.webresource.WebResourceManager;
 import com.atlassian.soy.renderer.SoyException;
 import com.atlassian.soy.renderer.SoyTemplateRenderer;
+import com.atlassian.stash.repository.Branch;
 import com.atlassian.stash.repository.Repository;
+import com.atlassian.stash.repository.RepositoryMetadataService;
 import com.atlassian.stash.repository.RepositoryService;
 import com.google.common.collect.ImmutableMap;
 
@@ -27,12 +29,14 @@ public class BranchListServlet extends HttpServlet {
     private final RepositoryService repositoryService;
     private final BranchService branchService;
     private final WebResourceManager webResourceManager;
+    private final RepositoryMetadataService repositoryMetadataService;
     
-    public BranchListServlet(SoyTemplateRenderer soyTemplateRenderer, RepositoryService repositoryService, BranchService branchService, WebResourceManager webResourceManager) {
+    public BranchListServlet(SoyTemplateRenderer soyTemplateRenderer, RepositoryService repositoryService, BranchService branchService, WebResourceManager webResourceManager, RepositoryMetadataService repositoryMetadataService) {
     	this.soyTemplateRenderer = soyTemplateRenderer;
     	this.repositoryService = repositoryService;
     	this.branchService = branchService;
     	this.webResourceManager = webResourceManager;
+    	this.repositoryMetadataService = repositoryMetadataService;
     }
 
     @Override
@@ -49,14 +53,13 @@ public class BranchListServlet extends HttpServlet {
             resp.sendError(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
+    	Branch defaultBranch = repositoryMetadataService.getDefaultBranch(repository);
         
-        
-    	
     	String template =  "stash.plugin.branchlist.viewbranches";
     	render(resp, template, ImmutableMap.<String, Object>builder()
         		.put("repository", repository)
-        		.put("branchListPage", branchService.getDiffsBetweenBranchesAndMaster(repository))
-        		.put("defaultBranch", branchService.getDefaultBranch(repository))
+        		.put("branchListPage", branchService.getDiffsBetweenBranchesAndSelectedBranch(repository, defaultBranch))
+        		.put("defaultBranch", defaultBranch)
         		.build()
         		);
     }
