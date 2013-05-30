@@ -19,12 +19,7 @@
     <resource type="download" name="stash-branch-list-plugin.css" location="css/stash-branch-list-plugin.css"/>
     <resource type="download" name="stash-branch-list-plugin.js" location="js/stash-branch-list-plugin.js"/>
     <dependency>com.atlassian.auiplugin:ajs</dependency>
-    <dependency>com.atlassian.stash.stash-web-plugin:infinite-table</dependency>
     <dependency>com.atlassian.stash.stash-web-api:branch-selector-field</dependency>
-    <dependency>com.atlassian.stash.stash-web-plugin:global</dependency>
-    <dependency>com.atlassian.stash.stash-web-plugin:repository-branch-selector</dependency>
-    <dependency>com.atlassian.stash.stash-web-plugin:user-multiselect</dependency>
-    <dependency>com.atlassian.auiplugin:aui-experimental-tooltips</dependency>
     <context>stash-branch-list-plugin</context>
   </stash-resource>
   
@@ -36,14 +31,12 @@
   </stash-resource>
   
   <!-- import from the product container -->
-  <component-import key="applicationProperties" interface="com.atlassian.sal.api.ApplicationProperties"/>
   <component-import key="gitCommandBuilderFactory" interface="com.atlassian.stash.scm.git.GitCommandBuilderFactory"/>
   <component-import key="soyTemplateRenderer" interface="com.atlassian.soy.renderer.SoyTemplateRenderer"/>
   <component-import key="gitAgent" interface="com.atlassian.stash.scm.git.GitAgent"/>
   <component-import key="webResourceManager" interface="com.atlassian.plugin.webresource.WebResourceManager"/>
   <component-import key="repositoryMetadataService" interface="com.atlassian.stash.repository.RepositoryMetadataService"/>
-  <component-import key="templateRenderer" interface="com.atlassian.templaterenderer.TemplateRenderer"/>
-  <component-import key="loggingService" interface="com.atlassian.stash.config.log.LoggingService"/>
+  <component-import key="i18nService" interface="com.atlassian.stash.i18n.I18nService"/>
   
   <!-- publish our components -->
   <component key="branchService" class="au.com.denisefernandez.stash.plugin.branchlist.service.BranchServiceImpl"/>

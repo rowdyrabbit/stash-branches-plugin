@@ -76,7 +76,7 @@ define('page/branch/branch-list', [
 		events.on('stash.feature.repository.revisionReferenceSelector.revisionRefChanged', function(revisionRef) {
 		    var branchId = revisionRef.getId();
 		    if (branchId != currentBranchId) {
-		    	this.currentBranchId = branchId;
+		    	currentBranchId = branchId;
 		    	$.ajax({ 
 		    		type: "GET",
 		    		dataType: "json",
