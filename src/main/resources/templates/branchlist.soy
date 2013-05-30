@@ -49,10 +49,19 @@
  * @param aheadPercentage
  * @param behindPercentage
  * @param branchUrl
+ * @param latestChangeTimestamp 
+ * @param authorName
  */
 {template .branchRow}
-	<tr>
-		<td><span class="branch-name" title="{$branch.id}"><a href="{$branchUrl}">{$branch.displayId}</a></span></td>
+	<tr class="branch-row">
+		<td>
+			<span class="branch-name" title="{$branch.id}"><a href="{$branchUrl}">{$branch.displayId}</a></span>
+			<p>Last commit:&nbsp; 
+				{call widget.date.shortAge}
+            		{param date: $latestChangeTimestamp /}
+        		{/call} by {$authorName}
+			</p>
+		</td>
 		<td>
 			<div class="comparison">
 				<span class="behind">
@@ -73,15 +82,24 @@
 /**
  * @param id
  * @param displayId
+ * @param latestChangeTimestamp
+ * @param authorName
  */
 {template .comparisonBranchRow}
 	<tr class="comparisonBranchRow" style="background-color:#f5f5f5;">
-		<td><span class="branch-name" title="{$id}">{$displayId}</span></td>
+		<td>
+			<h3><span class="branch-name" title="{$id}">{$displayId}</span> <span class="base-branch">(Base branch)</span></h3>
+			<p>Last commit:&nbsp; 
+				{call widget.date.shortAge}
+            		{param date: $latestChangeTimestamp /}
+        		{/call} by {$authorName}
+			</p>
+		</td>
 		<td>
 		</td>
 		<td>
 			<div class="base-branch">
-				<span>Base branch</span>
+				
 			</div>
 		</td>
 	</tr>

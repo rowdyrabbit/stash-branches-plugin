@@ -5,41 +5,30 @@ import java.util.Date;
 import com.atlassian.stash.content.Changeset;
 import com.atlassian.stash.repository.Branch;
 
-
-public class BranchComparison {
-	
-	private static final float MAX_NUM_COMMITS_AHEAD_OR_BEHIND = 50;
+public class BaseBranch {
 	
 	private Branch branch;
-	private int aheadCount;
-	private int behindCount;
 	private String branchUrl;
 	private Changeset latestChangeset;
 	
-	public BranchComparison(Branch branch, int aheadCount, int behindCount, String branchUrl, Changeset latestChangeset) {
+	public BaseBranch(Branch branch, String branchUrl, Changeset latestChangeset) {
 		this.branch = branch;
-		this.aheadCount = aheadCount;
-		this.behindCount = behindCount;
 		this.branchUrl = branchUrl;
 		this.latestChangeset = latestChangeset;
 	}
-
-	public int getBehindCount() {
-		return behindCount;
+	
+	public String getId() {
+		return branch.getId();
 	}
-
-	public float getBehindPercentage() {
-		return (behindCount / MAX_NUM_COMMITS_AHEAD_OR_BEHIND) * 100;
+	
+	public boolean isDefault() {
+		return branch.getIsDefault();
 	}
-
-	public int getAheadCount() {
-		return aheadCount;
+	
+	public String getDisplayId() {
+		return branch.getDisplayId();
 	}
-
-	public float getAheadPercentage() {
-		return (aheadCount / MAX_NUM_COMMITS_AHEAD_OR_BEHIND) * 100;
-	}
-
+	
 	public Branch getBranch() {
 		return branch;
 	}
@@ -59,6 +48,5 @@ public class BranchComparison {
 	public Date getLatestChangeTimestamp() {
 		return this.latestChangeset.getAuthorTimestamp();
 	}
-
 
 }

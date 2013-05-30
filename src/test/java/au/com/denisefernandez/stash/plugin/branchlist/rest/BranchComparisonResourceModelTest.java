@@ -11,9 +11,12 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import au.com.denisefernandez.stash.plugin.branchlist.service.BaseBranch;
 import au.com.denisefernandez.stash.plugin.branchlist.service.BranchComparison;
 
+import com.atlassian.stash.content.Changeset;
 import com.atlassian.stash.repository.Branch;
+import com.atlassian.stash.user.Person;
 import com.atlassian.stash.util.Page;
 import com.atlassian.stash.util.PageImpl;
 import com.atlassian.stash.util.PageRequestImpl;
@@ -22,6 +25,7 @@ public class BranchComparisonResourceModelTest {
 	
 	
 	private static final Branch MASTER = createBranch("refs/heads/master", "master", "cafebabe", true);
+	private static final Changeset LATEST_CHANGESET = createChangeset("a4bcd89aff");
 
 	private static Branch createBranch(String id, String displayId, String latestChangeset, boolean isDefault) {
 		Branch branch = mock(Branch.class);
@@ -30,6 +34,13 @@ public class BranchComparisonResourceModelTest {
 		when(branch.getLatestChangeset()).thenReturn(latestChangeset);
 		when(branch.getIsDefault()).thenReturn(isDefault);
 		return branch;
+	}
+	private static Changeset createChangeset(String id) {
+		Person person = mock(Person.class);
+		Changeset changeset = mock(Changeset.class);
+		when(changeset.getId()).thenReturn(id);
+		when(changeset.getAuthor()).thenReturn(person);
+		return changeset;
 	}
 	
 	private BranchComparisonResourceModel resourceModel;
@@ -40,18 +51,20 @@ public class BranchComparisonResourceModelTest {
 
 	@Test
 	public void testModelSizeIsZeroWhenNoBranchStatusesAddedToModel() {
+		BaseBranch baseBranch = new BaseBranch(MASTER, "/branch/master", LATEST_CHANGESET);
 		List<BranchComparison> branches = new ArrayList<BranchComparison>();
 		Page<BranchComparison> branchStatusList = new PageImpl<BranchComparison>(new PageRequestImpl(0, 100), branches, true);
-		resourceModel = new BranchComparisonResourceModel(branchStatusList);
+		resourceModel = new BranchComparisonResourceModel(branchStatusList, baseBranch);
 		assertThat(resourceModel.getBranchList().size(), is(0));
 	}
 	
 	@Test
 	public void testModelTransformedWhenBranchStatusesAddedToModel() {
+		BaseBranch baseBranch = new BaseBranch(MASTER, "/branch/master", LATEST_CHANGESET);
 		List<BranchComparison> branches = new ArrayList<BranchComparison>();
-		branches.add(new BranchComparison(MASTER, 5, 2, "/branches/test"));
+		branches.add(new BranchComparison(MASTER, 5, 2, "/branches/test", LATEST_CHANGESET));
 		Page<BranchComparison> branchStatusList = new PageImpl<BranchComparison>(new PageRequestImpl(0, 100), branches, true);
-		resourceModel = new BranchComparisonResourceModel(branchStatusList);
+		resourceModel = new BranchComparisonResourceModel(branchStatusList, baseBranch);
 		
 		List<RestBranchComparison> branchList = resourceModel.getBranchList();
 		

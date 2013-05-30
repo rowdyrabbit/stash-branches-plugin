@@ -18,11 +18,16 @@
 	text-align: center;
 }
 
-.base-branch {
-	text-align: right;
+.comparisonBranchRow p, .branch-row p  {
 	font-size: 12px;
-	font-weight: bold;
+	margin-top: 0px;
+	padding-left: 20px;
 }
+
+.comparisonBranchRow .base-branch {
+	font-size: 12px;
+}
+
 
 .comparison .separator {
 	display: block;

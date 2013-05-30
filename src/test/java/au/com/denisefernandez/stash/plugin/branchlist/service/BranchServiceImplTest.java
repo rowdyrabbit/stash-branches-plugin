@@ -11,6 +11,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
+import com.atlassian.stash.history.HistoryService;
 import com.atlassian.stash.nav.NavBuilder;
 import com.atlassian.stash.repository.Branch;
 import com.atlassian.stash.repository.Repository;
@@ -49,6 +50,8 @@ public class BranchServiceImplTest {
 	private NavBuilder mockNavBuilder;
 	@Mock
 	private ScmCommandFactory mockScmCommandFactory;
+	@Mock
+	private HistoryService historyService;
 
 	private BranchService branchService;
 	
@@ -58,7 +61,7 @@ public class BranchServiceImplTest {
 	public void setup() {
 		initMocks(this);
 		when(mockScmService.getCommandFactory(REP_1)).thenReturn(mockScmCommandFactory);
-		branchService = new BranchServiceImpl(mockGitCommandFactory, mockScmService, mockNavBuilder);
+		branchService = new BranchServiceImpl(mockGitCommandFactory, mockScmService, mockNavBuilder, historyService);
 	}
 	
 

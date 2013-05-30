@@ -9,6 +9,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import au.com.denisefernandez.stash.plugin.branchlist.service.BaseBranch;
 import au.com.denisefernandez.stash.plugin.branchlist.service.BranchComparison;
 import au.com.denisefernandez.stash.plugin.branchlist.service.BranchService;
 
@@ -41,8 +42,9 @@ public class BranchComparisonResource {
 	public Response getBranchComparison(@PathParam("repositorySlug") String repositorySlug, @PathParam("projectKey") String projectKey, @QueryParam("branch") String branchId) {
     	Repository repo = repositoryService.getBySlug(projectKey, repositorySlug);
     	Branch comparisonBranch = (Branch) repositoryMetadataService.resolveRef(repo, branchId);
+    	BaseBranch baseBranch = branchService.getBaseBranchForBranch(repo, comparisonBranch);
     	Page<BranchComparison> branchList = branchService.getDiffsBetweenAllBranchesAndComparisonBranch(repo, comparisonBranch);
     	
-    	return Response.ok(new BranchComparisonResourceModel(branchList, comparisonBranch)).build();
+    	return Response.ok(new BranchComparisonResourceModel(branchList, baseBranch)).build();
     }
 }

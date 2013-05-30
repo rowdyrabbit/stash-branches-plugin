@@ -37,7 +37,10 @@ define('page/branch/branch-list', [
 			'behindCount': 'number',
 			'behindPercentage': 'number',
 			'aheadPercentage': 'number',
-			'branchUrl': 'string'
+			'branchUrl': 'string',
+			'latestChangeset' : null,
+			'latestChangeTimestamp': null,
+			'authorName' : 'string'
 		}
 	});
 	

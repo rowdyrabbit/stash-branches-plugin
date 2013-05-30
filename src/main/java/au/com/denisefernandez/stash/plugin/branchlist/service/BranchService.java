@@ -7,5 +7,7 @@ import com.atlassian.stash.util.Page;
 public interface BranchService {
 	
 	Page<BranchComparison> getDiffsBetweenAllBranchesAndComparisonBranch(Repository repo, Branch compareBranch);
+	
+	BaseBranch getBaseBranchForBranch(Repository repo, Branch branch);
 
 }

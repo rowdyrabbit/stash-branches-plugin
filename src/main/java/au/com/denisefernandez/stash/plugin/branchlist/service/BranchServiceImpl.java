@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.atlassian.stash.content.Changeset;
+import com.atlassian.stash.history.HistoryService;
 import com.atlassian.stash.nav.NavBuilder;
 import com.atlassian.stash.repository.Branch;
 import com.atlassian.stash.repository.RefOrder;
@@ -28,20 +30,28 @@ public class BranchServiceImpl implements BranchService {
 	private final GitCommandBuilderFactory gitCommandFactory;
 	private final ScmService scmService;
 	private final NavBuilder navBuilder;
+	private final HistoryService historyService;
 	//When pagination is implemented this can be removed. If a repo has > 1000 branches I think it's got issues anyway.
 	private static final int MAX_NUMBER_OF_BRANCHES = 1000;
 	
 	
-	public BranchServiceImpl(GitCommandBuilderFactory gitCommandFactory, ScmService scmService, NavBuilder navBuilder) {
+	public BranchServiceImpl(GitCommandBuilderFactory gitCommandFactory, ScmService scmService, NavBuilder navBuilder, HistoryService historyService) {
 		this.gitCommandFactory = gitCommandFactory;
 		this.scmService = scmService;
 		this.navBuilder = navBuilder;
+		this.historyService = historyService;
+	}
+	
+	public BaseBranch getBaseBranchForBranch(Repository repo, Branch branch) {
+		Changeset latestChangeset =  historyService.getChangeset(repo, branch.getLatestChangeset());
+		String branchUrl = navBuilder.project(repo.getProject()).repo(repo).browse().atRevision(branch.getId()).buildAbsolute();
+		return new BaseBranch(branch, branchUrl, latestChangeset);
 	}
 
 	public Page<BranchComparison> getDiffsBetweenAllBranchesAndComparisonBranch(Repository repo, Branch compareBranch) {
 		return calculateDifferences(repo, compareBranch,  new PageRequestImpl(0, MAX_NUMBER_OF_BRANCHES));
 	}
-
+	
 	private Page<BranchComparison> calculateDifferences(Repository repo, Branch compareBranch, PageRequest pageRequest) {
 		ScmCommandFactory factory = scmService.getCommandFactory(repo);
 		Page<Branch> page = factory.branches(new BranchesCommandParameters.Builder().order(RefOrder.ALPHABETICAL).build(), pageRequest).call();
@@ -60,8 +70,7 @@ public class BranchServiceImpl implements BranchService {
     	while(allBranches.hasNext()) {
     		Branch currentBranch = allBranches.next();
     		if (currentBranch.getDisplayId().equalsIgnoreCase(compareBranch.getDisplayId())) {
-    			//TODO: If we want to display the comparison branch in the list, then we should add it to the list but mark it as special.
-    			//Found the branch we are comparing to, so exclude or mark it as the comparison branch
+    			//Found the branch we are comparing to, so exclude it from the list
     		} else {
     			BranchComparison branchComparison = buildBranchComparison(compareBranch, repo, currentBranch);
     			branchComparisonList.add(branchComparison);
@@ -83,9 +92,11 @@ public class BranchServiceImpl implements BranchService {
 			}
 		}
 		String branchUrl = navBuilder.project(repo.getProject()).repo(repo).browse().atRevision(currentBranch.getId()).buildAbsolute();
+		Changeset latestChangeset = historyService.getChangeset(repo, currentBranch.getLatestChangeset());
 		
-		return new BranchComparison(currentBranch, aheadCount, behindCount, branchUrl);
+		return new BranchComparison(currentBranch, aheadCount, behindCount, branchUrl, latestChangeset);
 	}
+	
 
 	private String executeRevListLeftRightCompareCommand(Branch compareBranch, Repository repo, Branch currentBranch) {
 		GitScmCommandBuilder command = gitCommandFactory.builder(repo).command("rev-list");

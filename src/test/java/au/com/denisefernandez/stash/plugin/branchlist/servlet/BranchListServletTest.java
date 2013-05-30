@@ -14,6 +14,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
+import au.com.denisefernandez.stash.plugin.branchlist.service.BaseBranch;
 import au.com.denisefernandez.stash.plugin.branchlist.service.BranchComparison;
 import au.com.denisefernandez.stash.plugin.branchlist.service.BranchService;
 
@@ -89,10 +90,12 @@ public class BranchListServletTest {
     	when(mockRequest.getPathInfo()).thenReturn("branches/PROJECT_1/rep_1/");
     	Repository mockRepo = mock(Repository.class);
     	Branch mockBranch = mock(Branch.class);
+    	BaseBranch baseBranch = mock(BaseBranch.class);
     	Page<BranchComparison> mockBranchComparisonPage = mock(Page.class);
     	when(mockRepositoryMetadataService.getDefaultBranch(mockRepo)).thenReturn(mockBranch);
     	when(mockRepositoryService.getBySlug("PROJECT_1", "rep_1")).thenReturn(mockRepo);
     	when(mockBranchService.getDiffsBetweenAllBranchesAndComparisonBranch(mockRepo, mockBranch)).thenReturn(mockBranchComparisonPage);
+    	when(mockBranchService.getBaseBranchForBranch(mockRepo, mockBranch)).thenReturn(baseBranch);
     	
     	servlet.doGet(mockRequest, mockResponse);
     	

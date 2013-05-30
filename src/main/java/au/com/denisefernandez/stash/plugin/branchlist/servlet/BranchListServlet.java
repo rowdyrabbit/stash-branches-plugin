@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import au.com.denisefernandez.stash.plugin.branchlist.service.BaseBranch;
 import au.com.denisefernandez.stash.plugin.branchlist.service.BranchService;
 
 import com.atlassian.plugin.webresource.WebResourceManager;
@@ -68,14 +69,16 @@ public class BranchListServlet extends HttpServlet {
     private void doView(Repository repository, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
     	String template =  "stash.plugin.branchlist.viewbranches";
     	Branch defaultBranch = repositoryMetadataService.getDefaultBranch(repository);
+    	BaseBranch baseBranch = branchService.getBaseBranchForBranch(repository, defaultBranch);
     	render(resp, template, ImmutableMap.<String, Object>builder()
     			.put("repository", repository)
     			.put("branchListPage", branchService.getDiffsBetweenAllBranchesAndComparisonBranch(repository, defaultBranch))
-    			.put("defaultBranch", defaultBranch)
+    			.put("defaultBranch", baseBranch)
     			.build()
 		);
 		
 	}
+
 
 	private void render(HttpServletResponse resp, String templateName, Map<String, Object> data) throws IOException, ServletException {
     	webResourceManager.requireResourcesForContext("stash-branch-list-plugin");
