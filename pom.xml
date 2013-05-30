@@ -11,6 +11,11 @@
     </organization>
     <name>stash-branch-list-plugin</name>
     <description>This is the Branch List plugin for Atlassian Stash.</description>
+    <scm>
+      <connection>scm:git:https://rowdyrabbit@bitbucket.org/rowdyrabbit/branch-comparisons.git</connection>
+      <developerConnection>scm:git:file:///${basedir}</developerConnection>
+      <url>https://bitbucket.org/rowdyrabbit/branch-comparisons</url>
+    </scm>
     <packaging>atlassian-plugin</packaging>
     <dependencyManagement>
         <dependencies>
