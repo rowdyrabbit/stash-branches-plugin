@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>au.com.denisefernandez</groupId>
     <artifactId>stash-branch-list-plugin</artifactId>
-    <version>0.1</version>
+    <version>0.2-SNAPSHOT</version>
     <organization>
         <name>Denise Fernandez</name>
         <url>http://www.denisefernandez.com.au/</url>
