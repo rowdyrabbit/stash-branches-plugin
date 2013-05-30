@@ -11,6 +11,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import au.com.denisefernandez.stash.plugin.branchlist.service.BranchComparison;
 
+import com.atlassian.stash.repository.Branch;
 import com.atlassian.stash.util.Page;
 @XmlRootElement(name = "message")
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -19,13 +20,20 @@ public class BranchComparisonResourceModel {
     @XmlElement(name = "values")
     private List<RestBranchComparison> branchList;
     
-
-    public BranchComparisonResourceModel(Page<BranchComparison> branchStatusList) {
+    @XmlElement(name="comparisonBranch")
+    private RestBranch comparisonBranch;
+    
+    public BranchComparisonResourceModel(Page<BranchComparison> branchStatusList, Branch comparisonBranch) {
     	this.branchList = transformList(branchStatusList);
+    	this.comparisonBranch = new RestBranch(comparisonBranch);
     }
 
 	public List<RestBranchComparison> getBranchList() {
-		return branchList;
+		return this.branchList;
+	}
+	
+	public RestBranch getComparisonBranch() {
+		return this.comparisonBranch;
 	}
 	
 	private List<RestBranchComparison> transformList(Page<BranchComparison> branchStatusList) {

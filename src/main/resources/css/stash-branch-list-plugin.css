@@ -18,6 +18,12 @@
 	text-align: center;
 }
 
+.base-branch {
+	text-align: right;
+	font-size: 12px;
+	font-weight: bold;
+}
+
 .comparison .separator {
 	display: block;
 	position: absolute;

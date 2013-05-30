@@ -2,28 +2,29 @@
 
 /**
  * @param branchListPage
+ * @param comparisonBranch
  **/
 {template .viewbranchesPageContents}
-    {if $branchListPage.size > 0}
-        {call .branchListTable data="$branchListPage" /}
-    {else}
-        {call .branchListBanner /}
-    {/if}
+    {call .branchListTable data="$branchListPage" }
+    	{param comparisonBranch: $comparisonBranch /}
+    {/call}
 {/template}
 
 /**
  * @param values
+ * @param comparisonBranch 
  */
 {template .branchListTable}
     {call widget.aui.table}
         {param id: 'branch-table' /}
         {param extraClasses: 'branch-list-table' /}
         {param headRowsHtml}
-            <th>Name</th>
-            <th><span class="comparison-state">State</span></th>
-            <th><!-- actions --></th>
+            <th></th>
+            <th></th>
+            <th></th>
         {/param}
         {param bodyRowsHtml}
+        	{call .comparisonBranchRow data="$comparisonBranch"/}
             {call .branchRows}
                 {param values: $values /}
             {/call}
@@ -69,20 +70,20 @@
 	</tr>
 {/template}
 
-
 /**
- *
- **/
-{template .branchListBanner}
-<div class='branch-list-banner'>
-    <div class="aui-item branch-list-item">
-        <div class="branch-list-splash-image">
-        </div>
-    </div>
-    <div class="aui-item branch-list-item">
-        <div class="branch-list-splash-text">
-            <p>No other branches exist to compare with.</p>
-        </div>
-    </div>
-</div>
+ * @param id
+ * @param displayId
+ */
+{template .comparisonBranchRow}
+	<tr class="comparisonBranchRow" style="background-color:#f5f5f5;">
+		<td><span class="branch-name" title="{$id}">{$displayId}</span></td>
+		<td>
+		</td>
+		<td>
+			<div class="base-branch">
+				<span>Base branch</span>
+			</div>
+		</td>
+	</tr>
 {/template}
+

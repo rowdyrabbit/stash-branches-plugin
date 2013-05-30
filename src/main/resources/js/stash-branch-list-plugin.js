@@ -49,12 +49,12 @@ define('page/branch/branch-list', [
         this.model = model;
 	}
 	
-	BranchListTableView.prototype.refreshTable = function(branchList, collection, options) {	
+	BranchListTableView.prototype.refreshTable = function(branchList) {
 		var $tableData;
         if (branchList.values.length == 0) {
             // no branches currently exist, don't do anything
         } else {
-            $tableData = stash.plugin.branchlist.branchListTable({values: branchList.values} );
+            $tableData = stash.plugin.branchlist.branchListTable({values: branchList.values, comparisonBranch : branchList.comparisonBranch} );
         }
         $('.branch-list-table').replaceWith($tableData);
 	};
@@ -75,7 +75,7 @@ define('page/branch/branch-list', [
 		
 		events.on('stash.feature.repository.revisionReferenceSelector.revisionRefChanged', function(revisionRef) {
 		    var branchId = revisionRef.getId();
-		    if (branchId != this.currentBranchId) {
+		    if (branchId != currentBranchId) {
 		    	this.currentBranchId = branchId;
 		    	$.ajax({ 
 		    		type: "GET",
