@@ -1,0 +1,2 @@
+stash-branches-plugin
+=====================
