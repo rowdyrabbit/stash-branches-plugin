@@ -5,7 +5,6 @@ bin/
 # Compiled Java source
 *.class
 
-
 # Log files
 *.log
 
@@ -13,3 +12,8 @@ bin/
 .settings/
 .project
 .classpath
+
+# Package Files #
+*.jar
+*.war
+*.ear
